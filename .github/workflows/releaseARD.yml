@@ -1,0 +1,17 @@
+name: ReleaseARD
+
+on:
+  push:
+    branches: [ "main" ]
+
+jobs:
+  deploy:
+
+    runs-on: ubuntu-latest
+
+    steps:
+    - uses: actions/checkout@v3
+    # Get Access Token from docker hub account "USER/Account Settings/Security/Access Tokens"
+    - run: docker build . -t adawarian/docker-test-repo
+    - run: echo "${{ secrets.DOCKER_PASSWORD }}" | docker login -u ${{ secrets.DOCKER_USERNAME }} --password-stdin
+    - run: docker push adawarian/docker-test-repo
